@@ -5,13 +5,6 @@ __email__       = "leidinicesilva@gmail.com"
 __date__        = "Sept 09, 2026"
 __description__ = "This script plot map of track density"
 
-# -*- coding: utf-8 -*-
-
-__author__ = "Leidinice Silva"
-__email__ = "leidinicesilva@gmail.com"
-__date__ = "Sept 09, 2026"
-__description__ = "This script plot map of track density"
-
 import os
 import cartopy.crs as ccrs
 import cartopy.feature as cfeat
@@ -23,7 +16,7 @@ from cartopy.mpl.ticker import LatitudeFormatter, LongitudeFormatter
 # Define specific paths
 path_txt_era5 = "/home/mda_silv/users/Reale_Lionello/ERA5"
 path_txt_regcm_eval = "/home/mda_silv/users/Reale_Lionello/RegCM5"
-path_txt_regcm_pgw = "/home/mda_silv/users/Reale_Lionello/RegCM5"
+path_txt_regcm_pgw = "/home/mda_silv/users/Reale_Lionello/PGW"
 path_out = "/home/mda_silv/github_projects/TW-CLLJ/v2/figs"
 
 # Define target years

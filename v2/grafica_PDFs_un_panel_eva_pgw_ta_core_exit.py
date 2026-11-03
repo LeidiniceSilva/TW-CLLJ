@@ -19,12 +19,8 @@ from scipy.stats import gaussian_kde
 
 
 latlon = [-85.5, -47, 8, 27.5]
-
 path = '/home/netapp-clima-users/users/jsalinas/Sim_RegCM/PDFs/ta925' # Path
-
-subdomains = {
-    ".": (13, 16, -71, -76),
-}
+subdomains = {".": (13, 16, -71, -76),}
 
 
 def import_data(exp):
@@ -47,12 +43,11 @@ def import_data(exp):
         raise ValueError("No se encontró la variable de longitud")
 
     uwnd = ds['ta925']
+    
     return lats, lons, uwnd
 
 
-# ============================
 # Cargar datos Code 1: Core
-# ============================
 lats_core, lons_core, uwnd_jun_jul_80_17_eva_core = import_data('jun-jul-eva_coreC')
 lats_core, lons_core, uwnd_ago_oct_80_17_eva_core = import_data('ago-oct-eva_coreC')
 lats_core, lons_core, uwnd_jun_jul_80_17_pgw_core = import_data('jun-jul-pgw_coreC')
@@ -68,10 +63,7 @@ if lons_core.max() > 180:
     lon_min_core = 360 + lon_min_core
     lon_max_core = 360 + lon_max_core
 
-
-# ============================
 # Cargar datos Code 2: Exit
-# ============================
 lats_exit, lons_exit, uwnd_jun_jul_80_17_eva_exit = import_data('jun-jul-eva_exitC')
 lats_exit, lons_exit, uwnd_ago_oct_80_17_eva_exit = import_data('ago-oct-eva_exitC')
 lats_exit, lons_exit, uwnd_jun_jul_80_17_pgw_exit = import_data('jun-jul-pgw_exitC')
@@ -87,11 +79,7 @@ if lons_exit.max() > 180:
     lon_min_exit = 360 + lon_min_exit
     lon_max_exit = 360 + lon_max_exit
 
-
-# ============================
 # Función para calcular PDF promedio
-# ============================
-
 def mean_pdf_region(data, lats, lons,
                     lat_min, lat_max,
                     lon_min, lon_max):
@@ -142,9 +130,7 @@ def mean_pdf_region(data, lats, lons,
     return x, pdf
 
 
-# ============================
 # Calcular PDFs: Core
-# ============================
 x1_core, pdf1_core = mean_pdf_region(
     uwnd_jun_jul_80_17_eva_core,
     lats_core, lons_core,
@@ -188,9 +174,7 @@ x6_core, pdf6_core = mean_pdf_region(
 )
 
 
-# ============================
 # Calcular PDFs: Exit
-# ============================
 x1_exit, pdf1_exit = mean_pdf_region(
     uwnd_jun_jul_80_17_eva_exit,
     lats_exit, lons_exit,
@@ -234,169 +218,76 @@ x6_exit, pdf6_exit = mean_pdf_region(
 )
 
 
-# ============================
 # Graficar: Core + Exit
-# ============================
+fig, ax = plt.subplots(1, 2, figsize=(13, 5.5), sharex=True, sharey=True)
 
-fig, ax = plt.subplots(
-    1,
-    2,
-    figsize=(13, 5.5),
-    sharex=True,
-    sharey=True
-)
-
-# ============================================================
 # (a) Jun-Jul: Jet Core + Jet Exit
-# ============================================================
-
-# ----------------------------
 # Jet Core - Jun-Jul
-# ----------------------------
-ax[0].plot(
-    x1_core, pdf1_core,
+ax[0].plot(x1_core, pdf1_core,
     color='navy',
     lw=2,
     linestyle='-',
-    label='Evaluation - Core'
-)
+    label='Evaluation - Core')
 
-ax[0].plot(
-    x3_core, pdf3_core,
-    color='firebrick',
-    lw=2,
-    linestyle='-',
-    label='PGW - Core'
-)
-
-ax[0].plot(
-    x5_core, pdf5_core,
+ax[0].plot(x5_core, pdf5_core,
     color='darkorange',
     lw=2,
     linestyle='-',
-    label='ERA5 - Core'
-)
+    label='ERA5 - Core')
 
-# ----------------------------
 # Jet Exit - Jun-Jul
-# ----------------------------
-ax[0].plot(
-    x1_exit, pdf1_exit,
+ax[0].plot(x1_exit, pdf1_exit,
     color='navy',
     lw=2,
     linestyle='--',
-    label='Evaluation - Exit'
-)
+    label='Evaluation - Exit')
 
-ax[0].plot(
-    x3_exit, pdf3_exit,
-    color='firebrick',
-    lw=2,
-    linestyle='--',
-    label='PGW - Exit'
-)
-
-ax[0].plot(
-    x5_exit, pdf5_exit,
+ax[0].plot(x5_exit, pdf5_exit,
     color='darkorange',
     lw=2,
     linestyle='--',
-    label='ERA5 - Exit'
-)
+    label='ERA5 - Exit')
 
 ax[0].set_title('(c) Jun-Jul')
 ax[0].set_xlabel('Temperature at 925 hPa (°C) - Active years')
 ax[0].set_ylabel('PDF')
 ax[0].grid(ls='--', alpha=0.4)
+ax[0].legend(loc='upper right', fontsize=9, frameon=True)
 
-ax[0].legend(
-    loc='upper right',
-    fontsize=9,
-    frameon=True
-)
-
-
-# ============================================================
 # (b) Aug-Oct: Jet Core + Jet Exit
-# ============================================================
-
-# ----------------------------
 # Jet Core - Aug-Oct
-# ----------------------------
-ax[1].plot(
-    x2_core, pdf2_core,
+ax[1].plot(x2_core, pdf2_core,
     color='navy',
     lw=2,
     linestyle='-',
-    label='Evaluation - Core'
-)
+    label='Evaluation - Core')
 
-ax[1].plot(
-    x4_core, pdf4_core,
-    color='firebrick',
-    lw=2,
-    linestyle='-',
-    label='PGW - Core'
-)
 
-ax[1].plot(
-    x6_core, pdf6_core,
+ax[1].plot(x6_core, pdf6_core,
     color='darkorange',
     lw=2,
     linestyle='-',
-    label='ERA5 - Core'
-)
+    label='ERA5 - Core')
 
-# ----------------------------
 # Jet Exit - Aug-Oct
-# ----------------------------
-ax[1].plot(
-    x2_exit, pdf2_exit,
+ax[1].plot(x2_exit, pdf2_exit,
     color='navy',
     lw=2,
     linestyle='--',
-    label='Evaluation - Exit'
-)
+    label='Evaluation - Exit')
 
-ax[1].plot(
-    x4_exit, pdf4_exit,
-    color='firebrick',
-    lw=2,
-    linestyle='--',
-    label='PGW - Exit'
-)
-
-ax[1].plot(
-    x6_exit, pdf6_exit,
+ax[1].plot(x6_exit, pdf6_exit,
     color='darkorange',
     lw=2,
     linestyle='--',
-    label='ERA5 - Exit'
-)
+    label='ERA5 - Exit')
 
 ax[1].set_title('(d) Aug-Oct')
 ax[1].set_xlabel('Temperature at 925 hPa (°C) - Active years')
 ax[1].grid(ls='--', alpha=0.4)
-
-ax[1].legend(
-    loc='upper right',
-    fontsize=9,
-    frameon=True
-)
-
-
-# ============================================================
-# Layout and save
-# ============================================================
+ax[1].legend(loc='upper right', fontsize=9, frameon=True)
 
 plt.tight_layout()
-
-plt.savefig(
-    'figs/ta925_PDFs-eva-pgw-ERA5_core_exit_1x2.png',
-    dpi=400,
-    bbox_inches='tight'
-)
-
+plt.savefig('figs/ta925_PDFs-eva-pgw-ERA5_core_exit_1x2.png', dpi=400, bbox_inches='tight')
 plt.show()
-
 exit()
